@@ -9,9 +9,11 @@ var jsonfile=require("jsonfile");
 app.get("/name", function(req,res){
   var list = path.join(process.cwd(), 'static/list.json');
   var data=jsonfile.readFileSync(list);
-  var inf=JSON.parse(data)
-  console.log(inf.name);
-  res.send(inf.name);
-
-} );
+  var name="";
+  for(var i in data){
+    console.log(data[i].name);
+    name+=" "+data[i].name;
+      };
+      res.send(name);
+  } );
 app.listen(8080);
