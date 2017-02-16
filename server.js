@@ -27,14 +27,27 @@ app.get("/name", function(req,res){
       if (data[i].id===id){
         data[i].name=name;
         flag = true;
-      }
+      };
     };
 
     if (!flag) {
       data.push(req.body);
-    }
+    };
 
     jsonfile.writeFileSync(list,data);
     res.sendStatus(200);
+  });
+  app.get("/del/:id", function (req,res){
+    var list = path.join(process.cwd(), 'static/list.json');
+    var data=jsonfile.readFileSync(list);
+    var data2= new Array();
+    for (var i in data){
+      if (data[i].id !== parseInt(req.params.id)){
+        data2.push(data[i]);
+      };
+    };
+    jsonfile.writeFileSync(list,data2);
+    res.sendStatus(200);
+
   });
 app.listen(8080);
