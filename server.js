@@ -14,6 +14,27 @@ app.get("/name", function(req,res){
     console.log(data[i].name);
     name+=" "+data[i].name;
       };
-      res.send(name);
+      res.send(JSON.stringify(name));
   } );
+  app.post("/zapros", jsonParser, function(req,res){
+    console.log(req.body);
+    var id=req.body.id;
+    var name=req.body.name;
+    var list = path.join(process.cwd(), 'static/list.json');
+    var data=jsonfile.readFileSync(list);
+    var flag;
+    for(var i=0; i<data.length; i++){
+      if (data[i].id===id){
+        data[i].name=name;
+        flag = true;
+      }
+    };
+
+    if (!flag) {
+      data.push(req.body);
+    }
+
+    jsonfile.writeFileSync(list,data);
+    res.sendStatus(200);
+  });
 app.listen(8080);
